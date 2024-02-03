@@ -1,6 +1,6 @@
-# ChatGPT with Data Processing Extensions
+# Node.js ChatGPT Client
 
-This repository contains a Node.js application that extends the capabilities of ChatGPT by allowing it to process and extract data from various sources such as files, directories, PDFs, images, web pages, and Git repositories. The application integrates with multiple AI models including OpenAI's GPT models, Google's Generative AI, Anthropic's Claude, and Mistral AI for processing natural language and generating responses.
+This is an unofficial project solely intended for personal learning and research. This repository contains a Node.js command line application that can be used to perform inferences on data from various sources such as files, directories, PDFs, images, web pages, and Git repositories using the GPT-4 API. For comparison, the application integrates with multiple AI models including OpenAI's GPT models, Google's Generative AI, Anthropic's Claude, and Mistral AI for processing natural language and generating responses. In order to use the application you must have an API key for the various AI models that the application supports. Please see the instructions below for more details.
 
 ## Features
 
@@ -52,7 +52,7 @@ Follow the prompts to input commands and paths to data sources. The application 
 
 ## Commands
 
-The first letter can be used as a shortcut for each command.
+The first letter can be used as a shortcut for each command. Paths can be relative or absolute.
 
 - `file`: Process a text file.
 - `pdf`: Process a PDF file.
@@ -63,6 +63,13 @@ The first letter can be used as a shortcut for each command.
 - `web`: Process a web page.
 - `save`: Save the current chat session.
 - `exit`: Exit the application.
+
+## Models
+
+- **OpenAI**: https://platform.openai.com/docs/quickstart
+- **Google**: https://ai.google.dev/docs
+- **Anthropic**: https://docs.anthropic.com/claude/reference/getting-started-with-the-api
+- **Mistral AI**: https://docs.mistral.ai/#api-access
 
 ## Configuration
 
@@ -82,6 +89,11 @@ The application stores data in specific directories within the user's home direc
 - **Processed Files**: Files processed by the application, such as converted or extracted files, are stored in `~/.chatgpt-client/files`.
 
 - **Temporary Data**: Used for intermediate processing steps, temporary data is stored in `~/.chatgpt-client/temp` and is managed automatically by the application.
+
+## Known Issues
+
+- Image processing is not fully implemented for non-OpenAI models
+- Error handling is extremely limited
 
 ## Contributing
 
