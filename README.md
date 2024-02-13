@@ -92,8 +92,9 @@ The application stores data in specific directories within the user's home direc
 
 ## Known Issues
 
-- Image processing is not fully implemented for non-OpenAI models
-- Error handling is extremely limited
+- Image processing is not fully implemented for non-OpenAI models.
+- Image extraction from PDFs is spotty.
+- Error handling is extremely limited.
 
 ## Contributing
 

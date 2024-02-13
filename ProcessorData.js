@@ -1,4 +1,6 @@
 // Load modules
+const ApiClientOpenAi = require('./ApiClientOpenAI');
+const ApiClientGoogle = require('./ApiClientGoogle');
 const Processor = require('./Processor');
 const FileExtractor = require('./ExtractorFile');
 const DirExtractor = require('./ExtractorDir');
@@ -125,13 +127,11 @@ class DataProcessor extends Processor {
       
       // Change model
       if ((this.type === 'image') || (this.type === 'pdfi') || (this.type === 'webi')) {
-        switch (this.chatSession.model) {
-          case 'gpt-4-1106-preview':
-            this.chatSession.model = 'gpt-4-vision-preview';
-            break;
-          case 'gemini-pro':
-            this.chatSession.model = 'gemini-pro-vision';
-            break;
+        if (this.chatSession.apiClient instanceof ApiClientOpenAi) {
+          this.chatSession.model = 'gpt-4-vision-preview';
+        } 
+        else if (this.chatSession.apiClient instanceof ApiClientGoogle) {
+          this.chatSession.model = 'gemini-pro-vision';
         }
       }
 
