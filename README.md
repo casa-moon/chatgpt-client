@@ -52,7 +52,7 @@ Follow the prompts to input commands and paths to data sources. The application 
 
 ## Commands
 
-The first letter can be used as a shortcut for each command. Paths can be relative or absolute.
+The first letter can be used as a shortcut for each command. Paths can be relative, absolute, or URLs.
 
 - `file`: Process a text file.
 - `pdf`: Process a PDF file.
