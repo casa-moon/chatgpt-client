@@ -103,3 +103,12 @@ Contributions are welcome! Please feel free to submit pull requests or create is
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Featured In
+
+[What I learned using large language models with large context windows](https://chadlangston.medium.com/9d408da8f935)
+<div> 
+    <a href="https://chadlangston.medium.com/9d408da8f935">
+      <img alt="What I learned using large language models with large context windows" width="50%" height="50%" src="https://images.squarespace-cdn.com/content/v1/65984fc5675bb439862b1882/34379b71-48d2-41dc-a3ec-6c64ecbc0f76/neeqolah-creative-works-u8Kyb3ZV_WI-unsplash+copy.jpg?format=2500w" title="What I learned using large language models with large context windows"/>
+    </a>
+</div>
