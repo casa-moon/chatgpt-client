@@ -14,7 +14,7 @@ class Main {
     this.messageLog = new MessageLog();
     
     // Initialize the API client
-    const api = readlineSync.question('openai=1, google=2, anthropic=3, mistral=4 (default=1) ');
+    const api = readlineSync.question('gpt-4=1, gemini-pro=2, claude-sonnet=3, claude-opus=4, mistral=5 (default=1) ');
     switch(api) {
       case '1':
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
@@ -26,9 +26,13 @@ class Main {
         break;
       case '3':
         this.apiClient = new ApiClientAnthropic(process.env.ANTHROPIC_API_KEY, this.messageLog);
-        this.model = "claude-2.1";
+        this.model = "claude-3-sonnet-20240229";
         break;
       case '4':
+        this.apiClient = new ApiClientAnthropic(process.env.ANTHROPIC_API_KEY, this.messageLog);
+        this.model = "claude-3-opus-20240229";
+        break;
+      case '5':
         this.apiClient = new ApiClientMistral(process.env.MISTRAL_API_KEY, this.messageLog);
         this.model = "mistral-medium";
         break;
