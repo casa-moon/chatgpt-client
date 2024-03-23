@@ -49,7 +49,7 @@ class DataProcessor extends Processor {
         if (!this.checkFileExists()) return null;
         
         // Copy the file to the files directory
-        //this.copyFileToDir();
+        this.copyFileToDir();
         break;
     }
 
