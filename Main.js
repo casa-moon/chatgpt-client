@@ -22,7 +22,7 @@ class Main {
         break;
       case '2':
         this.apiClient = new ApiClientGoogle(process.env.GOOGLE_API_KEY, this.messageLog);
-        this.model = "gemini-pro";
+        this.model = "gemini-1.5-pro-latest";
         break;
       case '3':
         this.apiClient = new ApiClientAnthropic(process.env.ANTHROPIC_API_KEY, this.messageLog);

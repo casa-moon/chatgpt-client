@@ -19,7 +19,7 @@ class ApiClientGoogle extends ApiClient {
     const spinner = ora().start();
 
     // Initialize the model
-    this.model = this.google.getGenerativeModel({ model: model});
+    this.model = this.google.getGenerativeModel({ model: model}, { apiVersion: 'v1beta' });
     
     //console.log(formattedMessageLog);
     const chat = this.model.startChat({
@@ -60,13 +60,13 @@ class ApiClientGoogle extends ApiClient {
         if (userContent) {
           transformedMessageLog.push({
             role: 'user',
-            parts: this.stripDocTagsIfOnlyOneSet(userContent)
+            parts: [{ text: this.stripDocTagsIfOnlyOneSet(userContent) }]
           });
           userContent = '';
         }
         transformedMessageLog.push({
           role: 'model',
-          parts: message.content
+          parts: [{ text: message.content }]
         });
       }
     }
@@ -75,14 +75,14 @@ class ApiClientGoogle extends ApiClient {
     if (userContent) {
       transformedMessageLog.push({
         role: 'user',
-        parts: this.stripDocTagsIfOnlyOneSet(userContent)
+        parts: [{ text: this.stripDocTagsIfOnlyOneSet(userContent) }]
       });
     }
     
     // Add a continue message
     transformedMessageLog.push({
       role: 'model',
-      parts: 'continue'
+      parts: [{ text: 'continue' }]
     });
     return transformedMessageLog;
   }
