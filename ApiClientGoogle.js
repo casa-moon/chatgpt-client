@@ -8,42 +8,49 @@ class ApiClientGoogle extends ApiClient {
   }
 
   async sendMessage(model) {
-    const rawMessageLog = this.messageLog.getRawMessageLog();
-    const formattedMessageLog = this.transformMessageLog(rawMessageLog);
-    //console.log(JSON.stringify(formattedMessageLog, null, 2));
-    
-    // Import the ora module
-    const ora = (await import('ora')).default;
+    try {
 
-    // Create a new ora instance
-    const spinner = ora().start();
+      const rawMessageLog = this.messageLog.getRawMessageLog();
+      const formattedMessageLog = this.transformMessageLog(rawMessageLog);
+      //console.log(JSON.stringify(formattedMessageLog, null, 2));
 
-    // Initialize the model
-    this.model = this.google.getGenerativeModel({ model: model}, { apiVersion: 'v1beta' });
-    
-    //console.log(formattedMessageLog);
-    const chat = this.model.startChat({
-      history: formattedMessageLog,
-      generationConfig: {
-        maxOutputTokens: 2048,
-      },
-    });
-    const msg = `${this.getLastUserMessage(rawMessageLog)}`;
-    //console.log(msg);
-    const result = await chat.sendMessage(msg);
-    const response = await result.response;
+      // Import the ora module
+      const ora = (await import('ora')).default;
 
-    // Log the entire response
-    //console.log('\n\nAPI Response:', JSON.stringify(response, null, 2));
+      // Create a new ora instance
+      const spinner = ora().start();
 
-    const text = response.text();
-    //console.log(text);
+      // Initialize the model
+      this.model = this.google.getGenerativeModel({model: model}, {apiVersion: 'v1beta'});
 
-    // Stop the spinner
-    spinner.stop();
+      //console.log(formattedMessageLog);
+      const chat = this.model.startChat({
+        history: formattedMessageLog,
+        generationConfig: {
+          maxOutputTokens: 2048,
+        },
+      });
+      const msg = `${this.getLastUserMessage(rawMessageLog)}`;
+      //console.log(msg);
+      const result = await chat.sendMessage(msg);
+      const response = await result.response;
 
-    // Return the response
-    return text;
+      // Log the entire response
+      //console.log('\n\nAPI Response:', JSON.stringify(response, null, 2));
+
+      const text = response.text();
+      //console.log(text);
+
+      // Stop the spinner
+      spinner.stop();
+
+      // Return the response
+      return text;
+    }
+    catch (error) {
+      console.error(error);
+      return "";
+    }
   }
 
   transformMessageLog(rawMessageLog) {
