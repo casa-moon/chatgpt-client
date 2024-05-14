@@ -18,7 +18,7 @@ class Main {
     switch(api) {
       case '1':
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
-        this.model = "gpt-4-0125-preview";
+        this.model = "gpt-4o";
         break;
       case '2':
         this.apiClient = new ApiClientGoogle(process.env.GOOGLE_API_KEY, this.messageLog);
@@ -38,7 +38,7 @@ class Main {
         break;
       default:
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
-        this.model = "gpt-4-0125-preview";
+        this.model = "gpt-4o";
         break;
     }
     

@@ -128,7 +128,7 @@ class DataProcessor extends Processor {
       // Change model
       if ((this.type === 'image') || (this.type === 'pdfi') || (this.type === 'webi')) {
         if (this.chatSession.apiClient instanceof ApiClientOpenAi) {
-          this.chatSession.model = 'gpt-4-vision-preview';
+          //this.chatSession.model = 'gpt-4-vision-preview';
         } 
         else if (this.chatSession.apiClient instanceof ApiClientGoogle) {
           this.chatSession.model = 'gemini-pro-vision';
