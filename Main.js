@@ -26,7 +26,7 @@ class Main {
         break;
       case '3':
         this.apiClient = new ApiClientAnthropic(process.env.ANTHROPIC_API_KEY, this.messageLog);
-        this.model = "claude-3-sonnet-20240229";
+        this.model = "claude-3-5-sonnet-20240620";
         break;
       case '4':
         this.apiClient = new ApiClientAnthropic(process.env.ANTHROPIC_API_KEY, this.messageLog);
