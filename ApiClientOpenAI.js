@@ -10,7 +10,7 @@ class ApiClientOpenAI extends ApiClient {
   async sendMessage(model) {
     const rawMessageLog = this.messageLog.getRawMessageLog();
     const formattedMessageLog = this.transformMessageLog(rawMessageLog);
-    console.log(JSON.stringify(formattedMessageLog, null, 2));
+    //console.log(JSON.stringify(formattedMessageLog, null, 2));
     
     // Import the ora module
     const ora = (await import('ora')).default;

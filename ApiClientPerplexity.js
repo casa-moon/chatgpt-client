@@ -84,7 +84,7 @@ class ApiClientPerplexity extends ApiClient {
     //  }]
     //});
     
-    console.log(JSON.stringify(transformedMessageLog, null, 2));
+    //console.log(JSON.stringify(transformedMessageLog, null, 2));
     return transformedMessageLog;
   }
 }
