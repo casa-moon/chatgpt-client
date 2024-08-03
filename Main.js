@@ -14,7 +14,7 @@ class Main {
     this.messageLog = new MessageLog();
     
     // Initialize the API client
-    const api = readlineSync.question('gpt-4=1, gemini-pro=2, claude-sonnet=3, claude-opus=4, mistral=5 (default=1) ');
+    const api = readlineSync.question('openai=1, gemini=2, claude=3, perplexity=4, mistral=5 (default=1) ');
     switch(api) {
       case '1':
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
@@ -29,8 +29,8 @@ class Main {
         this.model = "claude-3-5-sonnet-20240620";
         break;
       case '4':
-        this.apiClient = new ApiClientAnthropic(process.env.ANTHROPIC_API_KEY, this.messageLog);
-        this.model = "claude-3-opus-20240229";
+        this.apiClient = new ApiClientOpenAi(process.env.PERPLEXITY_API_KEY, this.messageLog, "https://api.perplexity.ai");
+        this.model = "llama-3.1-sonar-large-128k-chat";
         break;
       case '5':
         this.apiClient = new ApiClientMistral(process.env.MISTRAL_API_KEY, this.messageLog);

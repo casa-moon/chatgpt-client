@@ -2,9 +2,10 @@ const ApiClient = require('./ApiClient');
 const OpenAI = require('openai');
 
 class ApiClientOpenAI extends ApiClient {
-  constructor(apiKey, messageLog) {
+  constructor(apiKey, messageLog, baseURL='https://api.openai.com/v1/') {
     super(apiKey, messageLog);
-    this.openai = new OpenAI({ apiKey: this.apiKey });
+    this.baseURL = baseURL;
+    this.openai = new OpenAI({ baseURL: this.baseURL, apiKey: this.apiKey });
   }
 
   async sendMessage(model) {
