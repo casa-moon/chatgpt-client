@@ -71,7 +71,10 @@ class ApiClientPerplexity extends ApiClient {
     if (userContent) {
       transformedMessageLog.push({
         role: 'user',
-        content: userContent
+        content: [{
+          type: 'text',
+          text: userContent
+        }]
       });
     }
 
