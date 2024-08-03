@@ -4,6 +4,7 @@ const ChatSession = require('./ChatSession');
 const ApiClientOpenAi = require('./ApiClientOpenAI');
 const ApiClientGoogle = require('./ApiClientGoogle');
 const ApiClientAnthropic = require('./ApiClientAnthropic');
+const ApiClientPerplexity = require('./ApiClientPerplexity');
 const ApiClientMistral = require('./ApiClientMistral');
 const MessageLog = require('./MessageLog');
 const DataProcessor = require('./ProcessorData');
@@ -29,7 +30,7 @@ class Main {
         this.model = "claude-3-5-sonnet-20240620";
         break;
       case '4':
-        this.apiClient = new ApiClientOpenAi(process.env.PERPLEXITY_API_KEY, this.messageLog, "https://api.perplexity.ai");
+        this.apiClient = new ApiClientPerplexity(process.env.PERPLEXITY_API_KEY, this.messageLog);
         this.model = "llama-3.1-sonar-large-128k-chat";
         break;
       case '5':

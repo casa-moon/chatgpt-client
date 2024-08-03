@@ -2,16 +2,15 @@ const ApiClient = require('./ApiClient');
 const OpenAI = require('openai');
 
 class ApiClientOpenAI extends ApiClient {
-  constructor(apiKey, messageLog, baseURL='https://api.openai.com/v1/') {
+  constructor(apiKey, messageLog) {
     super(apiKey, messageLog);
-    this.baseURL = baseURL;
-    this.openai = new OpenAI({ baseURL: this.baseURL, apiKey: this.apiKey });
+    this.openai = new OpenAI({ apiKey: this.apiKey });
   }
 
   async sendMessage(model) {
     const rawMessageLog = this.messageLog.getRawMessageLog();
     const formattedMessageLog = this.transformMessageLog(rawMessageLog);
-    //console.log(JSON.stringify(formattedMessageLog, null, 2));
+    console.log(JSON.stringify(formattedMessageLog, null, 2));
     
     // Import the ora module
     const ora = (await import('ora')).default;
