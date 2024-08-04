@@ -21,7 +21,7 @@ class ApiClientGoogle extends ApiClient {
       const spinner = ora().start();
 
       // Initialize the model
-      this.model = this.google.getGenerativeModel({model: model}, {apiVersion: 'v1beta'});
+      this.model = this.google.getGenerativeModel({model: model}, {apiVersion: 'v1'});
 
       //console.log(formattedMessageLog);
       const chat = this.model.startChat({
