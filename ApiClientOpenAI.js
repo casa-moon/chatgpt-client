@@ -18,13 +18,24 @@ class ApiClientOpenAI extends ApiClient {
     // Create a new ora instance
     const spinner = ora().start();
     
-    const response = await this.openai.chat.completions.create({
-      model: model,
-      max_tokens: 4096,
-      temperature: 0,
-      messages: formattedMessageLog,
-    });
-
+    let response;
+    if (model === 'o1-preview') {
+      response = await this.openai.chat.completions.create({
+        model: model,
+        max_completion_tokens: 32768,
+        temperature: 1,
+        messages: formattedMessageLog,
+      });
+    }
+    else if (model === 'gpt-4o') {
+      response = await this.openai.chat.completions.create({
+        model: model,
+        max_tokens: 4096,
+        temperature: 0,
+        messages: formattedMessageLog,
+      });
+    }
+    
     // Log the entire response
     console.log('\n\nAPI Response:', response);
 
