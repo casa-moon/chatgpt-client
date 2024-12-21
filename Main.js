@@ -15,7 +15,7 @@ class Main {
     this.messageLog = new MessageLog();
     
     // Initialize the API client
-    const api = readlineSync.question('gpt-4o=1, gemini=2, claude=3, perplexity=4, mistral=5, o1=6 (default=1) ');
+    const api = readlineSync.question('gpt-4o=1, o1=2, gemini=3, claude=4, perplexity=5, mistral=6 (default=1) ');
     switch(api) {
       case '1':
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
