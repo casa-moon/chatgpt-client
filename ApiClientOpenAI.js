@@ -19,7 +19,7 @@ class ApiClientOpenAI extends ApiClient {
     const spinner = ora().start();
     
     let response;
-    if (model === 'o1-preview') {
+    if (model === 'o1-mini') {
       response = await this.openai.chat.completions.create({
         model: model,
         max_completion_tokens: 32768,

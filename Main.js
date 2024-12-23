@@ -23,7 +23,7 @@ class Main {
         break;
       case '2':
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
-        this.model = "o1-preview";
+        this.model = "o1-mini";
         break;
       case '3':
         this.apiClient = new ApiClientGoogle(process.env.GOOGLE_API_KEY, this.messageLog);
