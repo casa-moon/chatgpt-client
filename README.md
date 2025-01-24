@@ -1,4 +1,4 @@
-# Node.js ChatGPT Client
+# Node.js LLM Client
 
 This is an unofficial project solely intended for personal learning and research. This repository contains a Node.js command line application that can be used to perform inferences on data from various sources such as files, directories, PDFs, images, web pages, and Git repositories using the GPT-4 API. For comparison, the application integrates with multiple AI models including OpenAI's GPT models, Google's Generative AI, Anthropic's Claude, and Mistral AI for processing natural language and generating responses. In order to use the application you must have an API key for the various AI models that the application supports. Please see the instructions below for more details.
 
