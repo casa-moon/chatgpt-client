@@ -26,7 +26,7 @@ class Main {
         this.model = "o1-mini";
         break;
       case '3':
-        this.apiClient = new ApiClientGoogle(process.env.GOOGLE_API_KEY, this.messageLog);
+        this.apiClient = new ApiClientGoogle(process.env.GOOGLE_AI_API_KEY, this.messageLog);
         this.model = "gemini-1.5-pro-latest";
         break;
       case '4':

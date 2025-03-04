@@ -76,7 +76,7 @@ The first letter can be used as a shortcut for each command. Paths can be relati
 Set the following environment variables with your API keys before running the application:
 
 - `OPENAI_API_KEY`: Your OpenAI API key.
-- `GOOGLE_API_KEY`: Your Google Generative AI API key.
+- `GOOGLE_AI_API_KEY`: Your Google Generative AI API key.
 - `ANTHROPIC_API_KEY`: Your Anthropic API key.
 - `MISTRAL_API_KEY`: Your Mistral AI API key.
 
