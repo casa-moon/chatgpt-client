@@ -15,15 +15,15 @@ class Main {
     this.messageLog = new MessageLog();
     
     // Initialize the API client
-    const api = readlineSync.question('gpt-4o=1, o1=2, gemini=3, claude=4, perplexity=5, mistral=6 (default=1) ');
+    const api = readlineSync.question('gpt-4.1=1, o4=2, gemini=3, claude=4, perplexity=5, mistral=6 (default=1) ');
     switch(api) {
       case '1':
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
-        this.model = "gpt-4o";
+        this.model = "gpt-4.1";
         break;
       case '2':
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
-        this.model = "o1-mini";
+        this.model = "o4-mini";
         break;
       case '3':
         this.apiClient = new ApiClientGoogle(process.env.GOOGLE_AI_API_KEY, this.messageLog);
@@ -43,7 +43,7 @@ class Main {
         break;
       default:
         this.apiClient = new ApiClientOpenAi(process.env.OPENAI_API_KEY, this.messageLog);
-        this.model = "gpt-4o";
+        this.model = "gpt-4.1";
         break;
     }
     

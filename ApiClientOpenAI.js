@@ -19,7 +19,7 @@ class ApiClientOpenAI extends ApiClient {
     const spinner = ora().start();
     
     let response;
-    if (model === 'o1-mini') {
+    if (model === 'o4-mini') {
       response = await this.openai.chat.completions.create({
         model: model,
         max_completion_tokens: 32768,
@@ -27,10 +27,10 @@ class ApiClientOpenAI extends ApiClient {
         messages: formattedMessageLog,
       });
     }
-    else if (model === 'gpt-4o') {
+    else if (model === 'gpt-4.1') {
       response = await this.openai.chat.completions.create({
         model: model,
-        max_tokens: 4096,
+        max_tokens: 32768,
         temperature: 0,
         messages: formattedMessageLog,
       });
