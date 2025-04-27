@@ -30,9 +30,10 @@ For users running this application within the Termux environment on Android devi
 
 ```bash
 npm install --force @img/sharp-wasm32
+vi package.json and remove puppeteer from the dependencies
 ```
 
-This command forces the installation of a WebAssembly (WASM) version of the `sharp` library, which is compatible with the Termux environment.
+This command forces the installation of a WebAssembly (WASM) version of the `sharp` library, which is compatible with the Termux environment. It is also necessary to remove the puppeteer dependency from the `package.json` file, as it is not compatible with Termux.
 
 ```bash
 git reset --hard origin/develop
