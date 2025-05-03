@@ -1,12 +1,6 @@
 // Load modules
-const ApiClientOpenAi = require('./ApiClientOpenAI');
-const ApiClientGoogle = require('./ApiClientGoogle');
 const Processor = require('./Processor');
-const FileExtractor = require('./ExtractorFile');
-const DirExtractor = require('./ExtractorDir');
-const PdfExtractor = require('./ExtractorPdf');
-const ImageExtractor = require('./ExtractorImage');
-const WebExtractor = require('./ExtractorWeb');
+const { createExtractor } = require('./ExtractorFactory');
 const pathModule = require('path');
 const fs = require("fs");
 const simpleGit = require("simple-git");
@@ -55,30 +49,32 @@ class DataProcessor extends Processor {
 
     // Extract the data
     switch (input) {
-      case 'file': case 'f':
-        this.tempMessageLog = new FileExtractor(this.chatSession).extract(this.path);
+      case 'file': case 'f': {
+        const extractor = createExtractor(input, this.chatSession);
+        this.tempMessageLog = extractor.extract(this.path);
         if (this.tempMessageLog === null) return null;
         break;
+      }
       case 'pdf': case 'p':
         let getImagesPdf = false;
         if (await this.getConfirm('\nGet images?')) {
           this.type = 'pdfi';
           getImagesPdf = true;
         }
-        this.tempMessageLog = await new PdfExtractor(this.chatSession).extract(this.path, getImagesPdf);
+        this.tempMessageLog = await createExtractor(input, this.chatSession).extract(this.path, getImagesPdf);
         break;
       case 'xlsx': case 'x':
         await this.convertExcelToCsv();
-        this.tempMessageLog = new DirExtractor(this.chatSession).extract(this.path, false);
+        this.tempMessageLog = createExtractor(input, this.chatSession).extract(this.path, false);
         break;
       case 'image':
         this.type = 'image';
-        this.tempMessageLog = new ImageExtractor(this.chatSession).extract(this.path);
+        this.tempMessageLog = createExtractor(input, this.chatSession).extract(this.path);
         break;
       case 'dir': case 'd':
         if (!this.checkDirectoryExists()) return null;
         const recursiveDir = await this.getConfirm('\nRecursive?');
-        this.tempMessageLog = new DirExtractor(this.chatSession)
+        this.tempMessageLog = createExtractor(input, this.chatSession)
           .extract(this.path, recursiveDir);
         break;
       case 'git': case 'g':
@@ -88,7 +84,7 @@ class DataProcessor extends Processor {
         await git.clone(this.path, gitPath);
         await git.cwd(gitPath);
         const recursiveGit = await this.getConfirm('\nRecursive?');
-        this.tempMessageLog = new DirExtractor(this.chatSession)
+        this.tempMessageLog = createExtractor(input, this.chatSession)
           .extract(gitPath, recursiveGit);
         break;
       case 'web': case 'w':
@@ -105,7 +101,7 @@ class DataProcessor extends Processor {
         }
         
         // Extract the data
-        this.tempMessageLog = await new WebExtractor(this.chatSession)
+        this.tempMessageLog = await createExtractor(input, this.chatSession)
           .extract(this.path, depth, getImagesWeb, this.chatSession.isTermux);
         
         break;
@@ -129,11 +125,10 @@ class DataProcessor extends Processor {
       
       // Change model
       if ((this.type === 'image') || (this.type === 'pdfi') || (this.type === 'webi')) {
-        if (this.chatSession.apiClient instanceof ApiClientOpenAi) {
-          //this.chatSession.model = 'gpt-4-vision-preview';
-        } 
-        else if (this.chatSession.apiClient instanceof ApiClientGoogle) {
-          this.chatSession.model = 'gemini-pro-vision';
+        // Use vision-capable model if available
+        const visionModel = this.chatSession.apiClient.getVisionModel();
+        if (visionModel) {
+          this.chatSession.model = visionModel;
         }
       }
 
