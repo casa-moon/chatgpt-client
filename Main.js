@@ -62,32 +62,41 @@ class Main {
 
     console.log(
       "\ncommands: " +
-      "(f)ile, " +
-      "pdf, " +
-      "xlsx, " +
-      "image, " +
-      "dir, " +
-      "git, " +
-      "web, " +
-      "save, " +
-      "exit" +
-      " (default=direct input)" +
-      '\n'
+      "Chat, File, PDF, Excel (xlsx), Image, Directory, Git, Web, Save, Exit\n"
     );
 
-    // Main loop with multi-line input via editor
+    // Command selection loop using Enquirer select
+    const commandChoices = [
+      { name: 'chat', message: 'Direct Chat Input' },
+      { name: 'file', message: 'File' },
+      { name: 'pdf', message: 'PDF' },
+      { name: 'xlsx', message: 'Excel (xlsx)' },
+      { name: 'image', message: 'Image' },
+      { name: 'dir', message: 'Directory' },
+      { name: 'git', message: 'Git Repository' },
+      { name: 'web', message: 'Web Page' },
+      { name: 'save', message: 'Save Chat Session' },
+      { name: 'exit', message: 'Exit Application' }
+    ];
     while (true) {
-      const { input } = await prompt({ type: 'input', name: 'input', message: 'User:' });
-      const trimmed = input.trim();
-      if (trimmed === 'save' || trimmed === 's') {
-        this.chatSession.cleanUp(true);
-        break;
+      const { command } = await prompt({
+        type: 'select', name: 'command', message: 'Select command', choices: commandChoices
+      });
+      switch (command) {
+        case 'save':
+          this.chatSession.cleanUp(true);
+          return;
+        case 'exit':
+          this.chatSession.cleanUp();
+          return;
+        case 'chat': {
+          const { input } = await prompt({ type: 'input', name: 'input', message: 'Chat Input:' });
+          await new DataProcessor(this.chatSession).process(input);
+          break;
+        }
+        default:
+          await new DataProcessor(this.chatSession).process(command);
       }
-      if (trimmed === 'exit' || trimmed === 'e') {
-        this.chatSession.cleanUp();
-        break;
-      }
-      await new DataProcessor(this.chatSession).process(input);
     }
   }
 }
