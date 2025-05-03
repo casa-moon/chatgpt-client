@@ -1,5 +1,5 @@
 // Load modules
-const readlineSync = require('readline-sync');
+const { prompt } = require('enquirer');
 const pathModule = require('path');
 const axios = require("axios");
 const fs = require("fs");
@@ -27,8 +27,8 @@ class Processor {
     throw new Error('process() must be implemented by subclasses');
   }
 
-  addDirectiveToTempMessageLog() {
-    const directive = this.getUserInput('\nEnter a directive: \n');
+  async addDirectiveToTempMessageLog() {
+    const directive = await this.getUserInput('\nEnter a directive: \n');
     
     this.tempMessageLog.push({
       role: "user",
@@ -66,13 +66,11 @@ class Processor {
     return true;
   }
   
-  confirmSendMessage() {
-    const answer = readlineSync.question(`\nDo you want to send it? (y/n default=n) `);
-    if (answer.toLowerCase() === 'y') {
-      return true;
-    }
-    console.log('\nMessage not sent.');
-    return false;
+  // Confirm before sending a message
+  async confirmSendMessage() {
+    const proceed = await this.getConfirm('\nDo you want to send it?');
+    if (!proceed) console.log('\nMessage not sent.');
+    return proceed;
   }
 
   async convertExcelToCsv() {
@@ -105,9 +103,9 @@ class Processor {
     return true;
   }
   
-  displayData() {
-    const answer = this.getUserInput('\nDisplay the data? (y/n default=n) ');
-    if (answer.toLowerCase() === 'y') {
+  async displayData() {
+    const show = await this.getConfirm('\nDisplay the data?');
+    if (show) {
       console.log('\n' + JSON.stringify(this.tempMessageLog, null, 2)
         .replace(/\\n/g, '\n'));
     }
@@ -154,8 +152,15 @@ class Processor {
     console.log(`\nThis text data is ~${tokens} tokens and ~$${cost.toFixed(2)}. `);
   }
 
-  getUserInput(promptMessage) {
-    return readlineSync.question(promptMessage);
+  async getUserInput(promptMessage) {
+    const { value } = await prompt({ type: 'input', name: 'value', message: promptMessage });
+    return value;
+  }
+  
+  // Generic yes/no confirmation prompt
+  async getConfirm(promptMessage) {
+    const { confirm } = await prompt({ type: 'confirm', name: 'confirm', message: promptMessage });
+    return confirm;
   }
 
   async sheetToCsv(worksheet, outputDir) {

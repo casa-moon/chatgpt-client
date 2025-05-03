@@ -28,7 +28,7 @@ class DataProcessor extends Processor {
       case 'dir': case 'd':
       case 'git': case 'g':
       case 'web': case 'w':
-        this.path = this.getUserInput('\nEnter path: \n');
+        this.path = await this.getUserInput('\nEnter path: \n');
         if (!this.path.startsWith('http')) this.path = pathModule.resolve(this.path);
         this.chatSession.appendMessageToFile('\n\n***\n\n### User:\n\n' + this.path);
         break;
@@ -61,7 +61,7 @@ class DataProcessor extends Processor {
         break;
       case 'pdf': case 'p':
         let getImagesPdf = false;
-        if (this.getUserInput('\nGet images? (y/n default=n) ').toLowerCase().startsWith('y')) {
+        if (await this.getConfirm('\nGet images?')) {
           this.type = 'pdfi';
           getImagesPdf = true;
         }
@@ -77,8 +77,9 @@ class DataProcessor extends Processor {
         break;
       case 'dir': case 'd':
         if (!this.checkDirectoryExists()) return null;
+        const recursiveDir = await this.getConfirm('\nRecursive?');
         this.tempMessageLog = new DirExtractor(this.chatSession)
-          .extract(this.path, this.getUserInput('\nRecursive? (y/n default=n) ').toLowerCase().startsWith('y'));
+          .extract(this.path, recursiveDir);
         break;
       case 'git': case 'g':
         const gitPath = pathModule.join(this.chatSession.tempDir, pathModule.basename(this.path));
@@ -86,18 +87,19 @@ class DataProcessor extends Processor {
         const git = simpleGit();
         await git.clone(this.path, gitPath);
         await git.cwd(gitPath);
+        const recursiveGit = await this.getConfirm('\nRecursive?');
         this.tempMessageLog = new DirExtractor(this.chatSession)
-          .extract(gitPath, this.getUserInput('\nRecursive? (y/n default=n) ').toLowerCase().startsWith('y'));
+          .extract(gitPath, recursiveGit);
         break;
       case 'web': case 'w':
         // Get the depth
-        const inputDepth = this.getUserInput('\nEnter the depth of extraction (default=0): ');
+        const inputDepth = await this.getUserInput('\nEnter the depth of extraction (default=0): ');
         let depth = parseInt(inputDepth, 10);
         if (isNaN(depth)) depth = 0;
         
         // Get the images
         let getImagesWeb = false;
-        if (this.getUserInput('\nGet images? (y/n default=n) ').toLowerCase().startsWith('y')) {
+        if (await this.getConfirm('\nGet images?')) {
           this.type = 'webi';
           getImagesWeb = true;
         }
@@ -114,16 +116,16 @@ class DataProcessor extends Processor {
     }
 
     // If this is not a chat input, provide the user with the option to display the data
-    if (this.type !== 'chat') {
+      if (this.type !== 'chat') {
       // Ask the user if they want to see the data
-      this.displayData();
+      await this.displayData();
 
       // Get costs
       this.getTextCost();
       if ((this.type === 'pdfi') || (this.type === 'webi')) this.getImageCost();
 
       // Confirm send message
-      if (!this.confirmSendMessage()) return null;
+      if (!(await this.confirmSendMessage())) return null;
       
       // Change model
       if ((this.type === 'image') || (this.type === 'pdfi') || (this.type === 'webi')) {
@@ -136,7 +138,7 @@ class DataProcessor extends Processor {
       }
 
       // Add directive to message log
-      this.addDirectiveToTempMessageLog();
+      await this.addDirectiveToTempMessageLog();
 
       // Add the user's message to the message log
       this.addTempMessageLogToMessageLog();
