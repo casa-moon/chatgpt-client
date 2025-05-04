@@ -11,15 +11,6 @@ class ApiClient {
     throw new Error('sendMessage() must be implemented by subclasses');
   }
 
-  /**
-   * Returns the vision model name for handling image or visual inputs.
-   * Override in subclasses to specify a vision-capable model.
-   * @returns {string|null}
-   */
-  getVisionModel() {
-    return null;
-  }
-
   transformMessageLog(messageLog) {
     throw new Error('transformMessageLog() must be implemented by subclasses');
   }

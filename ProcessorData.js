@@ -122,15 +122,6 @@ class DataProcessor extends Processor {
 
       // Confirm send message
       if (!(await this.confirmSendMessage())) return null;
-      
-      // Change model
-      if ((this.type === 'image') || (this.type === 'pdfi') || (this.type === 'webi')) {
-        // Use vision-capable model if available
-        const visionModel = this.chatSession.apiClient.getVisionModel();
-        if (visionModel) {
-          this.chatSession.model = visionModel;
-        }
-      }
 
       // Add directive to message log
       await this.addDirectiveToTempMessageLog();

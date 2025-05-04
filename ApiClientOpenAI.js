@@ -71,13 +71,6 @@ class ApiClientOpenAI extends ApiClient {
       return { role, content };
     });
   }
-  /**
-   * Override to specify vision-capable model for image inputs
-   * @returns {string}
-   */
-  getVisionModel() {
-    return 'gpt-4-vision-preview';
-  }
 }
 
 module.exports = ApiClientOpenAI;
