@@ -1,5 +1,6 @@
 // Load modules
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const inquirer = require('inquirer');
 const ChatSession = require('./ChatSession');
 const { getChoices: getApiChoices, createApiClient } = require('./ApiClientFactory');
