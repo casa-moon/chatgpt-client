@@ -119,7 +119,7 @@ const templates = {
     let userContent = '';
     for (const message of rawLog) {
       if (message.role === 'user') {
-        userContent += message.content;
+        userContent += '<part>' + message.content + '</part>';
       } else {
         if (userContent) {
           transformed.push({

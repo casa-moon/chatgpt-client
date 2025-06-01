@@ -1,5 +1,5 @@
 
-const templates = require('./messageTemplates');
+const templates = require('./MessageTemplates');
 
 class ApiClient {
   constructor(apiKey, messageLog, templateKey) {
