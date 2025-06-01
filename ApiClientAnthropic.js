@@ -3,7 +3,7 @@ const Anthropic = require('@anthropic-ai/sdk');
 
 class ApiClientAnthropic extends ApiClient {
   constructor(apiKey, messageLog) {
-    super(apiKey, messageLog);
+    super(apiKey, messageLog, 'anthropic');
     this.anthropic = new Anthropic({ apiKey: this.apiKey });
   }
 
@@ -39,39 +39,7 @@ class ApiClientAnthropic extends ApiClient {
     return response.content[0].text;
   }
 
-  transformMessageLog(rawMessageLog) {
-    let transformedMessageLog = [];
-    let userContent = '';
-
-    for (let i = 0; i < rawMessageLog.length; i++) {
-      let message = rawMessageLog[i];
-      if (message.role === 'user') {
-        userContent += `<doc>${message.content}</doc>`;
-      } 
-      else {
-        if (userContent) {
-          transformedMessageLog.push({
-            role: 'user',
-            content: this.stripDocTagsIfOnlyOneSet(userContent)
-          });
-          userContent = '';
-        }
-        transformedMessageLog.push({
-          role: 'assistant',
-          content: message.content
-        });
-      }
-    }
-
-    // if the last message was a user message, add it to the transformed message log
-    if (userContent) {
-      transformedMessageLog.push({
-        role: 'user',
-        content: this.stripDocTagsIfOnlyOneSet(userContent)
-      });
-    }
-    return transformedMessageLog;
-  }
+  // message transformation handled by base class template
 }
 
 module.exports = ApiClientAnthropic;

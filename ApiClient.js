@@ -1,8 +1,14 @@
 
+const templates = require('./messageTemplates');
+
 class ApiClient {
-  constructor(apiKey, messageLog) {
+  constructor(apiKey, messageLog, templateKey) {
     this.apiKey = apiKey;
     this.messageLog = messageLog;
+    this.template = templates[templateKey];
+    if (!this.template) {
+      throw new Error(`Unknown message template: ${templateKey}`);
+    }
   }
 
   async sendMessage(model) {
@@ -12,7 +18,7 @@ class ApiClient {
   }
 
   transformMessageLog(messageLog) {
-    throw new Error('transformMessageLog() must be implemented by subclasses');
+    return this.template(messageLog, this);
   }
 
   stripDocTagsIfOnlyOneSet(userContent) {

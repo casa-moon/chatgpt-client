@@ -72,6 +72,12 @@ The first letter can be used as a shortcut for each command. Paths can be relati
 - **Anthropic**: https://docs.anthropic.com/claude/reference/getting-started-with-the-api
 - **Mistral AI**: https://docs.mistral.ai/#api-access
 
+### Message Templates
+
+Message formatting rules for each provider are defined in `messageTemplates.js`.
+Api clients automatically load the correct template, so you can customize how
+messages are sent by editing that file.
+
 ## Configuration
 
 Copy `.env.example` to `.env` and fill in your API keys. The application uses the [dotenv](https://www.npmjs.com/package/dotenv) package to load variables automatically:

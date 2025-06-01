@@ -3,7 +3,7 @@ const OpenAI = require('openai');
 
 class ApiClientOpenAI extends ApiClient {
   constructor(apiKey, messageLog) {
-    super(apiKey, messageLog);
+    super(apiKey, messageLog, 'openai');
     this.openai = new OpenAI({ apiKey: this.apiKey });
   }
 
@@ -46,31 +46,7 @@ class ApiClientOpenAI extends ApiClient {
     return response.choices[0].message.content;
   }
 
-  transformMessageLog(rawMessageLog) {
-    // Transform the raw message log into the format expected
-    return rawMessageLog.map(message => {
-      // If the role is model, change it to assistant
-      const role = message.role === 'model' ? 'assistant' : message.role;
-
-      let content = [];
-      if (message.type === 'text') {
-        content = [{
-          type: message.type,
-          text: message.content
-        }];
-      }
-      else if (message.type === 'image') {
-        content = [{
-          type: 'image_url',
-          image_url: {
-            url: message.content
-          }
-        }];
-      }
-      
-      return { role, content };
-    });
-  }
+  // message transformation handled by base class template
 }
 
 module.exports = ApiClientOpenAI;
