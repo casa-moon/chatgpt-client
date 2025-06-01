@@ -1,5 +1,5 @@
 // Load modules
-const { prompt } = require('enquirer');
+const inquirer = require('inquirer');
 const pathModule = require('path');
 const axios = require("axios");
 const fs = require("fs");
@@ -153,13 +153,13 @@ class Processor {
   }
 
   async getUserInput(promptMessage) {
-    const { value } = await prompt({ type: 'input', name: 'value', message: promptMessage });
+    const { value } = await inquirer.prompt({ type: 'input', name: 'value', message: promptMessage });
     return value;
   }
   
   // Generic yes/no confirmation prompt
   async getConfirm(promptMessage) {
-    const { confirm } = await prompt({ type: 'confirm', name: 'confirm', message: promptMessage });
+    const { confirm } = await inquirer.prompt({ type: 'confirm', name: 'confirm', message: promptMessage });
     return confirm;
   }
 
