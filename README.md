@@ -56,7 +56,8 @@ Follow the prompts to input commands and paths to data sources. The application 
 The first letter can be used as a shortcut for each command. Paths can be relative, absolute, or URLs.
 
 - `file`: Process a text file.
-- `pdf`: Process a PDF file.
+- `pdf`: Process a PDF file. If a local path without the `.pdf` extension is
+  provided, the extension will be checked automatically.
 - `xlsx`: Process an Excel file.
 - `image`: Process an image URL.
 - `dir`: Process a directory.

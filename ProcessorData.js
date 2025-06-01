@@ -23,7 +23,14 @@ class DataProcessor extends Processor {
       case 'git': case 'g':
       case 'web': case 'w':
         this.path = await this.getUserInput('\nEnter path: \n');
-        if (!this.path.startsWith('http')) this.path = pathModule.resolve(this.path);
+        if (!this.path.startsWith('http')) {
+          this.path = pathModule.resolve(this.path);
+          if ((input === 'pdf' || input === 'p') &&
+              !this.path.toLowerCase().endsWith('.pdf')) {
+            const pdfPath = this.path + '.pdf';
+            if (fs.existsSync(pdfPath)) this.path = pdfPath;
+          }
+        }
         this.chatSession.appendMessageToFile('\n\n***\n\n### User:\n\n' + this.path);
         break;
       default:
