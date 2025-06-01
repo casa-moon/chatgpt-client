@@ -1,6 +1,6 @@
 const fs = require("fs");
 const isUtf8 = require('is-utf8');
-const pdfParse = require('pdf-parse');
+const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
 const { PDFDocument, PDFName, PDFRawStream } = require('pdf-lib');
 const pathModule = require('path');
 const pako = require('pako');
@@ -53,10 +53,17 @@ class Extractor {
 
   async extractTextFromPdf(path) {
     try {
-      const dataBuffer = fs.readFileSync(path);
-      const data = await pdfParse(dataBuffer);
-      //console.log(data.text);
-      return data.text;
+      const data = new Uint8Array(fs.readFileSync(path));
+      const pdf = await pdfjsLib.getDocument({ data }).promise;
+      let text = '';
+      const numPages = pdf.numPages;
+      for (let i = 1; i <= numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent({ normalizeWhitespace: true });
+        const strings = content.items.map(item => item.str);
+        text += strings.join(' ') + '\n';
+      }
+      return text;
     } catch (error) {
       throw new Error(`\nFailed to extract text from PDF: ${error.message}\n`);
     }
