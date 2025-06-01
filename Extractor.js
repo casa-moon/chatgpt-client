@@ -1,6 +1,5 @@
 const fs = require("fs");
 const isUtf8 = require('is-utf8');
-const pdfParse = require('pdf-parse');
 const { PDFDocument, PDFName, PDFRawStream } = require('pdf-lib');
 const pathModule = require('path');
 const pako = require('pako');
@@ -53,10 +52,26 @@ class Extractor {
 
   async extractTextFromPdf(path) {
     try {
-      const dataBuffer = fs.readFileSync(path);
-      const data = await pdfParse(dataBuffer);
-      //console.log(data.text);
-      return data.text;
+      const pdfBytes = fs.readFileSync(path);
+      const pdfDoc = await PDFDocument.load(pdfBytes);
+      let text = '';
+      const enumerated = pdfDoc.context.enumerateIndirectObjects();
+      for (const [, obj] of enumerated) {
+        if (!(obj instanceof PDFRawStream)) continue;
+        const dict = obj.dict;
+        const subtype = dict.get(PDFName.of('Subtype'));
+        if (subtype && subtype === PDFName.of('Image')) continue;
+        const content = Buffer.from(obj.contents).toString('latin1');
+        const regex = /\((?:\\.|[^\\])*?\)/g;
+        let match;
+        while ((match = regex.exec(content)) !== null) {
+          const raw = match[0].slice(1, -1);
+          const cleaned = raw.replace(/\\([()nrtbf\\])/g, '$1');
+          text += cleaned + ' ';
+        }
+        text += '\n';
+      }
+      return text.trim();
     } catch (error) {
       throw new Error(`\nFailed to extract text from PDF: ${error.message}\n`);
     }
