@@ -115,10 +115,32 @@ const templates = {
   },
 
   ollama(rawLog) {
-    return rawLog.map(message => {
-      const role = message.role === 'model' ? 'assistant' : message.role;
-      return { role, content: message.content };
-    });
+    let transformed = [];
+    let userContent = '';
+    for (const message of rawLog) {
+      if (message.role === 'user') {
+        userContent += message.content;
+      } else {
+        if (userContent) {
+          transformed.push({
+            role: 'user',
+            content: [{ type: 'text', text: userContent }]
+          });
+          userContent = '';
+        }
+        transformed.push({
+          role: 'assistant',
+          content: [{ type: message.type, text: message.content }]
+        });
+      }
+    }
+    if (userContent) {
+      transformed.push({
+        role: 'user',
+        content: [{ type: 'text', text: userContent }]
+      });
+    }
+    return transformed;
   }
 };
 

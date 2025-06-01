@@ -15,6 +15,7 @@ class ApiClientOllama extends ApiClient {
   async sendMessage(model) {
     const rawMessageLog = this.messageLog.getRawMessageLog();
     const formattedMessageLog = this.transformMessageLog(rawMessageLog);
+    //console.log(JSON.stringify(formattedMessageLog, null, 2));
 
     const ora = (await import('ora')).default;
     const spinner = ora().start();
