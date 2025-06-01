@@ -3,7 +3,7 @@ const axios = require('axios');
 
 class ApiClientOllama extends ApiClient {
   constructor(apiKey, messageLog) {
-    super(apiKey, messageLog);
+    super(apiKey, messageLog, 'ollama');
     this.baseURL = process.env.OLLAMA_API_URL || 'http://127.0.0.1:11434';
     const headers = { 'Content-Type': 'application/json' };
     if (this.apiKey) {
@@ -30,15 +30,7 @@ class ApiClientOllama extends ApiClient {
     return response.data.choices[0].message.content;
   }
 
-  transformMessageLog(rawMessageLog) {
-    return rawMessageLog.map(message => {
-      const role = message.role === 'model' ? 'assistant' : message.role;
-      return {
-        role,
-        content: message.content
-      };
-    });
-  }
+  // message transformation handled by base class template
 
   // Fetch available models from Ollama server
   async listModels() {

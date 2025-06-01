@@ -3,7 +3,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 class ApiClientGoogle extends ApiClient {
   constructor(apiKey, messageLog) {
-    super(apiKey, messageLog);
+    super(apiKey, messageLog, 'google');
     this.google = new GoogleGenerativeAI(this.apiKey);
   }
 
@@ -53,46 +53,7 @@ class ApiClientGoogle extends ApiClient {
     }
   }
 
-  transformMessageLog(rawMessageLog) {
-    let transformedMessageLog = [];
-    let userContent = '';
-
-    for (let i = 0; i < rawMessageLog.length; i++) {
-      let message = rawMessageLog[i];
-
-      if (message.role === 'user') {
-        userContent += `<doc>${message.content}</doc>`;
-      }
-      else {
-        if (userContent) {
-          transformedMessageLog.push({
-            role: 'user',
-            parts: [{ text: this.stripDocTagsIfOnlyOneSet(userContent) }]
-          });
-          userContent = '';
-        }
-        transformedMessageLog.push({
-          role: 'model',
-          parts: [{ text: message.content }]
-        });
-      }
-    }
-
-    // if the last message was a user message, add it to the transformed message log
-    if (userContent) {
-      transformedMessageLog.push({
-        role: 'user',
-        parts: [{ text: this.stripDocTagsIfOnlyOneSet(userContent) }]
-      });
-    }
-    
-    // Add a continue message
-    transformedMessageLog.push({
-      role: 'model',
-      parts: [{ text: 'continue' }]
-    });
-    return transformedMessageLog;
-  }
+  // message transformation handled by base class template
 
   getLastUserMessage(messageLog) {
     for (let i = messageLog.length - 1; i >= 0; i--) {
