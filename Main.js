@@ -18,9 +18,21 @@ class Main {
       message: 'Select API',
       choices: getApiChoices()
     });
-    const { apiClient, model } = createApiClient(api, this.messageLog);
+    const { apiClient, model: initialModel } = createApiClient(api, this.messageLog);
     this.apiClient = apiClient;
-    this.model = model;
+    let selectedModel = initialModel;
+    if (initialModel === 'ollama') {
+      const availableModels = await this.apiClient.listModels();
+      const modelChoices = availableModels.map(m => ({ name: m, message: m }));
+      const { chosenModel } = await prompt({
+        type: 'select',
+        name: 'chosenModel',
+        message: 'Select Ollama model',
+        choices: modelChoices
+      });
+      selectedModel = chosenModel;
+    }
+    this.model = selectedModel;
     this.chatSession = new ChatSession(this.apiClient, this.model, this.messageLog);
 
     console.log(
