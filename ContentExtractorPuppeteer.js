@@ -51,14 +51,13 @@ class PuppeteerContentExtractor extends ContentExtractor {
         const promises = filteredLinks.map(async link => await this.extractText(link, depth - 1));
         await Promise.all(promises);
       }
-      await browser.close();
-    }
-    catch (error) {
-      console.error(`Error processing URL ${path}: ${error}`);
-    }
-    finally {
-      await browser.close();
-    }
+      }
+      catch (error) {
+        console.error(`Error processing URL ${path}: ${error}`);
+      }
+      finally {
+        await browser.close();
+      }
   }
 
   async extractImages(path, depth) {
@@ -135,7 +134,6 @@ class PuppeteerContentExtractor extends ContentExtractor {
         await Promise.all(promises);
       }
 
-      await browser.close();
     } catch (error) {
       console.error(`Error processing URL ${path}: ${error}`);
     } finally {
