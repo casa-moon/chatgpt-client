@@ -29,21 +29,18 @@ class Main {
         type: 'list',
         name: 'chosenModel',
         message: 'Select Ollama model',
-        choices: modelChoices
+        choices: modelChoices,
+        pageSize: modelChoices.length
       });
       selectedModel = chosenModel;
     }
     this.model = selectedModel;
     this.chatSession = new ChatSession(this.apiClient, this.model, this.messageLog);
 
-    console.log(
-      "\ncommands: " +
-      "Chat, File, PDF, Excel (xlsx), Image, Directory, Git, Web, Save, Exit\n"
-    );
-
     // Command selection loop using Inquirer list
     const commandChoices = [
       { name: 'Direct Chat Input', value: 'chat' },
+      { name: 'Multi-line Input', value: 'multi' },
       { name: 'File', value: 'file' },
       { name: 'PDF', value: 'pdf' },
       { name: 'Excel (xlsx)', value: 'xlsx' },
@@ -56,7 +53,11 @@ class Main {
     ];
     while (true) {
       const { command } = await inquirer.prompt({
-        type: 'list', name: 'command', message: 'Select command', choices: commandChoices
+        type: 'list', 
+        name: 'command', 
+        message: 'Select command', 
+        choices: commandChoices, 
+        pageSize: commandChoices.length
       });
       switch (command) {
         case 'save':
@@ -66,7 +67,12 @@ class Main {
           this.chatSession.cleanUp();
           return;
         case 'chat': {
-          const { input } = await inquirer.prompt({ type: 'input', name: 'input', message: 'Chat Input:' });
+          const { input } = await inquirer.prompt({ type: 'input', name: 'input', message: 'Chat input:' });
+          await new DataProcessor(this.chatSession).process(input);
+          break;
+        }
+        case 'multi': {
+          const { input } = await inquirer.prompt({ type: 'editor', name: 'input', message: 'Multi-line input:' });
           await new DataProcessor(this.chatSession).process(input);
           break;
         }
