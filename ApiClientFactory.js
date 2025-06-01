@@ -18,11 +18,11 @@ const apiConfigs = [
 ];
 
 /**
- * Get choices for enquirer prompt
- * @returns {Array<{name: string, message: string}>}
- */
+ * Get choices for inquirer prompt
+ * @returns {Array<{name: string, value: string}>}
+*/
 function getChoices() {
-  return apiConfigs.map(cfg => ({ name: cfg.name, message: cfg.message }));
+  return apiConfigs.map(cfg => ({ name: cfg.message, value: cfg.name }));
 }
 
 /**

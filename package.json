@@ -10,7 +10,7 @@
     "cheerio": "^1.0.0-rc.12",
     "csv-writer": "^1.6.0",
     "dotenv": "^16.4.1",
-    "enquirer": "^2.4.1",
+    "inquirer": "^9.2.5",
     "exceljs": "^4.4.0",
     "gpt-tokenizer": "^2.1.2",
     "is-utf8": "^0.2.1",

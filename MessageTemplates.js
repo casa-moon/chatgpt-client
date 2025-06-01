@@ -86,61 +86,23 @@ const templates = {
   },
 
   perplexity(rawLog) {
-    let transformed = [];
-    let userContent = '';
-    for (const message of rawLog) {
-      if (message.role === 'user') {
-        userContent += `<doc>${message.content}</doc>`;
-      } else {
-        if (userContent) {
-          transformed.push({
-            role: 'user',
-            content: [{ type: 'text', text: userContent }]
-          });
-          userContent = '';
-        }
-        transformed.push({
-          role: 'assistant',
-          content: [{ type: message.type, text: message.content }]
-        });
+    return rawLog.map(message => {
+      const role = message.role === 'model' ? 'assistant' : message.role;
+      if (message.type === 'text') {
+        return { role, content: [{ type: 'text', text: message.content }] };
       }
-    }
-    if (userContent) {
-      transformed.push({
-        role: 'user',
-        content: [{ type: 'text', text: userContent }]
-      });
-    }
-    return transformed;
+      if (message.type === 'image') {
+        return { role, content: [{ type: 'image_url', image_url: { url: message.content } }] };
+      }
+      return { role, content: [{ type: message.type, text: message.content }] };
+    });
   },
 
   ollama(rawLog) {
-    let transformed = [];
-    let userContent = '';
-    for (const message of rawLog) {
-      if (message.role === 'user') {
-        userContent += `<doc>${message.content}</doc>`;
-      } else {
-        if (userContent) {
-          transformed.push({
-            role: 'user',
-            content: [{ type: 'text', text: userContent }]
-          });
-          userContent = '';
-        }
-        transformed.push({
-          role: 'assistant',
-          content: [{ type: message.type, text: message.content }]
-        });
-      }
-    }
-    if (userContent) {
-      transformed.push({
-        role: 'user',
-        content: [{ type: 'text', text: userContent }]
-      });
-    }
-    return transformed;
+    return rawLog.map(message => {
+      const role = message.role === 'model' ? 'assistant' : message.role;
+      return { role, content: message.content };
+    });
   }
 };
 

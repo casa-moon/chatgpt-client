@@ -1,6 +1,6 @@
 // Load modules
 require('dotenv').config();
-const { prompt } = require('enquirer');
+const inquirer = require('inquirer');
 const ChatSession = require('./ChatSession');
 const { getChoices: getApiChoices, createApiClient } = require('./ApiClientFactory');
 const MessageLog = require('./MessageLog');
@@ -13,8 +13,8 @@ class Main {
 
   async run() {
     // Select API client and model via factory
-    const { api } = await prompt({
-      type: 'select',
+    const { api } = await inquirer.prompt({
+      type: 'list',
       name: 'api',
       message: 'Select API',
       choices: getApiChoices()
@@ -24,9 +24,9 @@ class Main {
     let selectedModel = initialModel;
     if (initialModel === 'ollama') {
       const availableModels = await this.apiClient.listModels();
-      const modelChoices = availableModels.map(m => ({ name: m, message: m }));
-      const { chosenModel } = await prompt({
-        type: 'select',
+      const modelChoices = availableModels.map(m => ({ name: m, value: m }));
+      const { chosenModel } = await inquirer.prompt({
+        type: 'list',
         name: 'chosenModel',
         message: 'Select Ollama model',
         choices: modelChoices
@@ -41,22 +41,22 @@ class Main {
       "Chat, File, PDF, Excel (xlsx), Image, Directory, Git, Web, Save, Exit\n"
     );
 
-    // Command selection loop using Enquirer select
+    // Command selection loop using Inquirer list
     const commandChoices = [
-      { name: 'chat', message: 'Direct Chat Input' },
-      { name: 'file', message: 'File' },
-      { name: 'pdf', message: 'PDF' },
-      { name: 'xlsx', message: 'Excel (xlsx)' },
-      { name: 'image', message: 'Image' },
-      { name: 'dir', message: 'Directory' },
-      { name: 'git', message: 'Git Repository' },
-      { name: 'web', message: 'Web Page' },
-      { name: 'save', message: 'Save Chat Session' },
-      { name: 'exit', message: 'Exit Application' }
+      { name: 'Direct Chat Input', value: 'chat' },
+      { name: 'File', value: 'file' },
+      { name: 'PDF', value: 'pdf' },
+      { name: 'Excel (xlsx)', value: 'xlsx' },
+      { name: 'Image', value: 'image' },
+      { name: 'Directory', value: 'dir' },
+      { name: 'Git Repository', value: 'git' },
+      { name: 'Web Page', value: 'web' },
+      { name: 'Save Chat Session', value: 'save' },
+      { name: 'Exit Application', value: 'exit' }
     ];
     while (true) {
-      const { command } = await prompt({
-        type: 'select', name: 'command', message: 'Select command', choices: commandChoices
+      const { command } = await inquirer.prompt({
+        type: 'list', name: 'command', message: 'Select command', choices: commandChoices
       });
       switch (command) {
         case 'save':
@@ -66,7 +66,7 @@ class Main {
           this.chatSession.cleanUp();
           return;
         case 'chat': {
-          const { input } = await prompt({ type: 'input', name: 'input', message: 'Chat Input:' });
+          const { input } = await inquirer.prompt({ type: 'input', name: 'input', message: 'Chat Input:' });
           await new DataProcessor(this.chatSession).process(input);
           break;
         }
