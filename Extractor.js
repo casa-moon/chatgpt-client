@@ -1,6 +1,6 @@
 const fs = require("fs");
 const isUtf8 = require('is-utf8');
-const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
+const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.mjs');
 const { PDFDocument, PDFName, PDFRawStream } = require('pdf-lib');
 const pathModule = require('path');
 const pako = require('pako');
