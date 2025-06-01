@@ -1,5 +1,5 @@
 // Load modules
-const { prompt } = require('enquirer');
+const { prompt } = require('inquirer');
 const pathModule = require('path');
 const axios = require("axios");
 const fs = require("fs");
