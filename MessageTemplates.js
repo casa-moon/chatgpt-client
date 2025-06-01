@@ -90,7 +90,7 @@ const templates = {
     let userContent = '';
     for (const message of rawLog) {
       if (message.role === 'user') {
-        userContent += message.content;
+        userContent += `<doc>${message.content}</doc>`;
       } else {
         if (userContent) {
           transformed.push({
@@ -119,7 +119,7 @@ const templates = {
     let userContent = '';
     for (const message of rawLog) {
       if (message.role === 'user') {
-        userContent += '<part>' + message.content + '</part>';
+        userContent += `<doc>${message.content}</doc>`;
       } else {
         if (userContent) {
           transformed.push({
