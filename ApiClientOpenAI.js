@@ -22,7 +22,7 @@ class ApiClientOpenAI extends ApiClient {
     if (model === 'o4-mini') {
       response = await this.openai.chat.completions.create({
         model: model,
-        max_completion_tokens: 32768,
+        max_tokens: 32768,
         temperature: 1,
         messages: formattedMessageLog,
       });
