@@ -22,7 +22,7 @@ class DataProcessor extends Processor {
       case 'dir': case 'd':
       case 'git': case 'g':
       case 'web': case 'w':
-        this.path = await this.getUserInput('\nEnter path: \n');
+        this.path = await this.getUserInput('Enter path:');
         if (!this.path.startsWith('http')) {
           this.path = pathModule.resolve(this.path);
           if ((input === 'pdf' || input === 'p') &&
@@ -64,7 +64,7 @@ class DataProcessor extends Processor {
       }
       case 'pdf': case 'p':
         let getImagesPdf = false;
-        if (await this.getConfirm('\nGet images?')) {
+        if (await this.getConfirm('Get images?')) {
           this.type = 'pdfi';
           getImagesPdf = true;
         }
@@ -80,7 +80,7 @@ class DataProcessor extends Processor {
         break;
       case 'dir': case 'd':
         if (!this.checkDirectoryExists()) return null;
-        const recursiveDir = await this.getConfirm('\nRecursive?');
+        const recursiveDir = await this.getConfirm('Recursive?');
         this.tempMessageLog = createExtractor(input, this.chatSession)
           .extract(this.path, recursiveDir);
         break;
@@ -90,19 +90,19 @@ class DataProcessor extends Processor {
         const git = simpleGit();
         await git.clone(this.path, gitPath);
         await git.cwd(gitPath);
-        const recursiveGit = await this.getConfirm('\nRecursive?');
+        const recursiveGit = await this.getConfirm('Recursive?');
         this.tempMessageLog = createExtractor(input, this.chatSession)
           .extract(gitPath, recursiveGit);
         break;
       case 'web': case 'w':
         // Get the depth
-        const inputDepth = await this.getUserInput('\nEnter the depth of extraction (default=0): ');
+        const inputDepth = await this.getUserInput('Enter the depth of extraction (default=0): ');
         let depth = parseInt(inputDepth, 10);
         if (isNaN(depth)) depth = 0;
         
         // Get the images
         let getImagesWeb = false;
-        if (await this.getConfirm('\nGet images?')) {
+        if (await this.getConfirm('Get images?')) {
           this.type = 'webi';
           getImagesWeb = true;
         }

@@ -28,7 +28,7 @@ class Processor {
   }
 
   async addDirectiveToTempMessageLog() {
-    const directive = await this.getUserInput('\nEnter a directive: \n');
+    const directive = await this.getUserInput('Enter a directive:');
     
     this.tempMessageLog.push({
       role: "user",
@@ -68,7 +68,7 @@ class Processor {
   
   // Confirm before sending a message
   async confirmSendMessage() {
-    const proceed = await this.getConfirm('\nDo you want to send it?');
+    const proceed = await this.getConfirm('Do you want to send it?', true);
     if (!proceed) console.log('\nMessage not sent.');
     return proceed;
   }
@@ -98,13 +98,13 @@ class Processor {
       fs.copyFileSync(this.path, newFilePath);
       this.path = newFilePath;
 
-      console.log('\nFile copied to ' + this.chatSession.dir + ' directory.');
+      console.log('File copied to ' + this.chatSession.dir + ' directory.');
     }
     return true;
   }
   
   async displayData() {
-    const show = await this.getConfirm('\nDisplay the data?');
+    const show = await this.getConfirm('Display the data?');
     if (show) {
       console.log('\n' + JSON.stringify(this.tempMessageLog, null, 2)
         .replace(/\\n/g, '\n'));
@@ -149,7 +149,7 @@ class Processor {
     let textMessageLog = this.tempMessageLog.filter(message => message.type !== 'image');
     const tokens = isWithinTokenLimit(JSON.stringify(textMessageLog).replace(/<|endoftext|>/g), 1000000000);
     const cost = tokens / 1000 * .01;
-    console.log(`\nThis text data is ~${tokens} tokens and ~$${cost.toFixed(2)}. `);
+    console.log(`This text data is ~${tokens} tokens and ~$${cost.toFixed(2)}. `);
   }
 
   async getUserInput(promptMessage) {
@@ -158,8 +158,13 @@ class Processor {
   }
   
   // Generic yes/no confirmation prompt
-  async getConfirm(promptMessage) {
-    const { confirm } = await inquirer.prompt({ type: 'confirm', name: 'confirm', message: promptMessage });
+  async getConfirm(promptMessage, defaultValue = false) {
+    const { confirm } = await inquirer.prompt({ 
+      type: 'confirm', 
+      name: 'confirm', 
+      message: promptMessage, 
+      default: defaultValue
+    });
     return confirm;
   }
 
