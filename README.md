@@ -74,12 +74,15 @@ The first letter can be used as a shortcut for each command. Paths can be relati
 
 ## Configuration
 
-Set the following environment variables with your API keys before running the application:
+Copy `.env.example` to `.env` and fill in your API keys. The application uses the [dotenv](https://www.npmjs.com/package/dotenv) package to load variables automatically:
 
 - `OPENAI_API_KEY`: Your OpenAI API key.
 - `GOOGLE_AI_API_KEY`: Your Google Generative AI API key.
 - `ANTHROPIC_API_KEY`: Your Anthropic API key.
 - `MISTRAL_API_KEY`: Your Mistral AI API key.
+- `PERPLEXITY_API_KEY`: Your Perplexity AI key.
+- `OLLAMA_API_KEY`: Your Ollama API key.
+- `OLLAMA_API_URL`: Base URL for your Ollama server (default `http://127.0.0.1:11434`).
 
 ## App Data
 

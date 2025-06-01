@@ -1,4 +1,5 @@
 // Load modules
+require('dotenv').config();
 const { prompt } = require('enquirer');
 const ChatSession = require('./ChatSession');
 const { getChoices: getApiChoices, createApiClient } = require('./ApiClientFactory');
